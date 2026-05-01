@@ -11,7 +11,8 @@
 
 const loggerName = "QuestlogT1"
 const itemsMaxGrade = 41;
-const runesMaxGrade = 41;
+const runesSynergyMaxGrade = 41;
+const runesMaxGrade = 40;
 const ignoredGrades = [];
 const stats = ["str", "dex", "int", "per", "con"]
 const maxStats = 49;
@@ -43,7 +44,7 @@ function modifyEquipmentItems(json) {
 }
 
 function modifyEquipmentRunes(json) {
-        json.result.data = Object.fromEntries(
+    json.result.data = Object.fromEntries(
         Object.entries(json.result.data).filter(([key, value]) => value.grade <= runesMaxGrade)
     );
     return json
@@ -51,7 +52,7 @@ function modifyEquipmentRunes(json) {
 
 function modifyRuneSynergies(json) {
     json.result.data = Object.fromEntries(
-        Object.entries(json.result.data).filter(([key, value]) => value.grade <= runesMaxGrade)
+        Object.entries(json.result.data).filter(([key, value]) => value.grade <= runesSynergyMaxGrade)
     );
 
     let data = json.result.data;
@@ -70,7 +71,7 @@ function freezeStatsButtons() {
     let statsText = document.querySelector('.flex.h-8.rounded-t.bg-dark.flex-center').textContent;
     let currentStats = parseInt(statsText.match(/\d+/));
 
-    if (prevStats != currentStats) {
+    if (prevStats != currentStats || currentStats >= maxStats) {
         prevStats = currentStats;
         const statsContainer = document.querySelector(".flex.flex-col.gap-2.p-2");
         const statsIncrementButtons = statsContainer.querySelectorAll('button.inline-flex.bg-light.text-default');
